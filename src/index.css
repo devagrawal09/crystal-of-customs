@@ -1,3 +1,75 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.glow {
+  transition: 0.1s;
+  box-shadow:
+    inset 0 0 50px 8px #fff,
+    0 0 10px #fff,
+    -10px 0 20px #f0f,
+    10px 0 20px #0ff;
+}
+
+.glow:focus, .glow:hover {
+  box-shadow:
+    inset 0 0 50px 8px #fff,
+    0 0 10px 5px #fff,
+    -10px 0 20px 5px #f0f,
+    10px 0 20px 5px #0ff;
+}
+
+.text-glow {
+  text-shadow:
+    0 0 15px rgba(255,255,255,1),
+    -5px 0 15px rgba(255,0,255,0.6),
+    5px 0 15px rgba(0,255,255,0.6),
+    
+    0 0 15px rgba(255,255,255,1),
+    -5px 0 15px rgba(255,0,255,0.6),
+    5px 0 15px rgba(0,255,255,0.6),
+    
+    0 0 15px rgba(255,255,255,1),
+    -10px 0 15px rgba(255,0,255,0.6),
+    10px 0 15px rgba(0,255,255,0.6),
+    
+    0 0 15px rgba(255,255,255,1),
+    -10px 0 15px rgba(255,0,255,0.6),
+    10px 0 15px rgba(0,255,255,0.6),
+    
+    0 0 15px rgba(255,255,255,1),
+    -15px 0 15px rgba(255,0,255,0.6),
+    15px 0 15px rgba(0,255,255,0.6),
+    
+    0 0 15px rgba(255,255,255,1),
+    -15px 0 15px rgba(255,0,255,0.6),
+    15px 0 15px rgba(0,255,255,0.6),
+    
+    0 0 15px rgba(255,255,255,1),
+    -20px 0 15px rgba(255,0,255,0.6),
+    20px 0 15px rgba(0,255,255,0.6);
+}
+
+.btn-glow {
+  transition: 0.1s;
+  box-shadow:
+    inset 0 0 30px 10px #fff,
+    inset 5px 0 15px 10px #f0f,
+    inset -5px 0 15px 10px #0ff,
+    inset 5px 0 25px 10px #f0f,
+    inset -5px 0 25px 10px #0ff,
+    0 0 10px #fff,
+    -10px 0 20px #f0f,
+    10px 0 20px #0ff;
+}
+.btn-glow:hover {
+  box-shadow:
+    inset 0 0 30px 10px #fff,
+    inset 5px 0 15px 10px #f0f,
+    inset -5px 0 15px 10px #0ff,
+    inset 5px 0 25px 10px #f0f,
+    inset -5px 0 25px 10px #0ff,
+    0 0 10px 5px #fff,
+    -10px 0 20px 5px #f0f,
+    10px 0 20px 5px #0ff;
+}
