@@ -21,7 +21,6 @@
   "dependencies": {
     "@tanstack/solid-query": "^4.24.4",
     "showdown": "^2.1.0",
-    "solid-js": "^1.6.10",
-    "zod": "^3.20.2"
+    "solid-js": "^1.6.10"
   }
 }

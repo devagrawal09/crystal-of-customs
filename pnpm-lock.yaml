@@ -11,13 +11,11 @@ specifiers:
   typescript: ^4.9.5
   vite: ^4.1.1
   vite-plugin-solid: ^2.5.0
-  zod: ^3.20.2
 
 dependencies:
   '@tanstack/solid-query': 4.24.4_solid-js@1.6.10
   showdown: 2.1.0
   solid-js: 1.6.10
-  zod: 3.20.2
 
 devDependencies:
   '@types/showdown': 2.0.0
@@ -1380,7 +1378,3 @@ packages:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
     engines: {node: '>= 6'}
     dev: true
-
-  /zod/3.20.2:
-    resolution: {integrity: sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==}
-    dev: false
