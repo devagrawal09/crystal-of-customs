@@ -209,41 +209,59 @@ const HabitsGrid = () => {
                 </div>
                 <div class="grid grid-cols-2">
                   <div class="p-1">
-                    <HabitButton
-                      value={habit.value}
-                      onClick={() =>
-                        scoreHabitMutation.mutate({
-                          taskId: habit._id,
-                          direction: "down",
-                        })
-                      }
-                      disabled={
-                        scoreHabitMutation.isLoading &&
-                        scoreHabitMutation.variables?.taskId === habit._id &&
-                        scoreHabitMutation.variables.direction === "down"
+                    <Show
+                      when={habit.down}
+                      fallback={
+                        <HabitButton value={habit.value}>
+                          -{habit.counterDown}
+                        </HabitButton>
                       }
                     >
-                      -{habit.counterDown}
-                    </HabitButton>
+                      <HabitButton
+                        value={habit.value}
+                        onClick={() =>
+                          scoreHabitMutation.mutate({
+                            taskId: habit._id,
+                            direction: "down",
+                          })
+                        }
+                        disabled={
+                          scoreHabitMutation.isLoading &&
+                          scoreHabitMutation.variables?.taskId === habit._id &&
+                          scoreHabitMutation.variables.direction === "down"
+                        }
+                      >
+                        -{habit.counterDown}
+                      </HabitButton>
+                    </Show>
                   </div>
                   <div class="p-1">
-                    <HabitButton
-                      value={habit.value}
-                      onClick={() => {
-                        console.log("clicked");
-                        scoreHabitMutation.mutate({
-                          taskId: habit._id,
-                          direction: "up",
-                        });
-                      }}
-                      disabled={
-                        scoreHabitMutation.isLoading &&
-                        scoreHabitMutation.variables?.taskId === habit._id &&
-                        scoreHabitMutation.variables.direction === "up"
+                    <Show
+                      when={habit.up}
+                      fallback={
+                        <HabitButton value={habit.value}>
+                          +{habit.counterUp}
+                        </HabitButton>
                       }
                     >
-                      +{habit.counterUp}
-                    </HabitButton>
+                      <HabitButton
+                        value={habit.value}
+                        onClick={() => {
+                          console.log("clicked");
+                          scoreHabitMutation.mutate({
+                            taskId: habit._id,
+                            direction: "up",
+                          });
+                        }}
+                        disabled={
+                          scoreHabitMutation.isLoading &&
+                          scoreHabitMutation.variables?.taskId === habit._id &&
+                          scoreHabitMutation.variables.direction === "up"
+                        }
+                      >
+                        +{habit.counterUp}
+                      </HabitButton>
+                    </Show>
                   </div>
                 </div>
                 <HabitPriority priority={habit.priority} />
@@ -283,9 +301,21 @@ const HabitCard = (props: { value: number; children: JSX.Element }) => {
 const HabitButton = (props: {
   value: number;
   children: JSX.Element;
-  onClick: () => void;
+  onClick?: () => void;
   disabled?: boolean;
 }) => {
+  if (!props.onClick) {
+    return (
+      <button
+        onClick={props.onClick}
+        disabled={props.disabled}
+        class="rounded-full disabled:text-gray-600 text-2xl w-12 h-12 bg-gray-500 text-white cursor-not-allowed"
+      >
+        {props.children}
+      </button>
+    );
+  }
+
   if (props.value > 10) {
     return (
       <button
