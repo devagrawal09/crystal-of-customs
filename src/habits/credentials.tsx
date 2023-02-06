@@ -12,5 +12,7 @@ createEffect(() => {
   const creds = credentials();
   if (creds) {
     localStorage.setItem("credentials", JSON.stringify(creds));
+  } else {
+    localStorage.removeItem("credentials");
   }
 });

@@ -7,6 +7,7 @@ import {
 import { credentials, setCredentials } from "./credentials";
 import { calculateAverageScore, getHabits, getUser, scoreTask } from "./api";
 import showdown from "showdown";
+import logo from "../assets/logo.png";
 
 const converter = new showdown.Converter();
 
@@ -16,18 +17,67 @@ export interface UserData {
 }
 
 export const HabitsPage = () => {
+  const userDataQuery = createQuery(() => [`user`, credentials()], getUser, {
+    retry: false,
+    staleTime: 1000 * 60 * 60, // 1 hour
+  });
+
   return (
     <Show when={credentials()} fallback={<UserForm />}>
       {() => (
-        <div>
-          <button
-            class="absolute top-10 right-5 py-2 px-4 btn-glow rounded"
-            onClick={() => setCredentials(undefined)}
-          >
-            Logout
-          </button>
-          <HabitsGrid />
-        </div>
+        <>
+          <header class="flex justify-between mx-3">
+            <img src={logo} width={150} />
+            <div class="text-center">
+              <h1 class="pt-6 pb-3 text-4xl font-bold text-blue-50">
+                Welcome to the Crystal of Customs
+              </h1>
+              <Show when={userDataQuery.status === "loading"}>
+                <div class="text-blue-50 text-2xl">Loading User Data...</div>
+              </Show>
+              <Show when={userDataQuery.status === "error"}>
+                <div class="text-blue-50 text-2xl">
+                  Error: {(userDataQuery.error as any).message}
+                </div>
+              </Show>
+              <Show when={userDataQuery.status === "success"}>
+                <h2 class="text-blue-50 text-2xl">
+                  Hail and well met, {userDataQuery.data?.profile.name}!
+                </h2>
+                <div class="text-red-50 text-lg">
+                  Lo and behold, thy roster of duties and aspirations for thine
+                  self-betterment quest. <br />
+                </div>
+              </Show>
+            </div>
+            <div style={{ width: `150px` }} class="text-right">
+              <button
+                class="mt-8 py-2 px-4 btn-glow rounded"
+                onClick={() => setCredentials(undefined)}
+              >
+                Logout
+              </button>
+            </div>
+          </header>
+          <main>
+            <HabitsGrid />
+          </main>
+        </>
+      )}
+    </Show>
+  );
+};
+
+export const LogoutButton = () => {
+  return (
+    <Show when={credentials()}>
+      {() => (
+        <button
+          class="absolute top-10 right-5 py-2 px-4 btn-glow rounded"
+          onClick={() => setCredentials(undefined)}
+        >
+          Logout
+        </button>
       )}
     </Show>
   );
@@ -35,57 +85,62 @@ export const HabitsPage = () => {
 
 const UserForm = () => {
   return (
-    <form
-      class="font-semibold w-1/3 grid grid-cols-3 gap-6 my-3 mx-auto"
-      onSubmit={(e) => {
-        try {
-          e.preventDefault();
-          const userId = e.currentTarget.userId.value;
-          const token = e.currentTarget.token.value;
+    <>
+      <header>
+        <h1 class="p-6 text-4xl text-center font-bold text-blue-50">
+          Welcome to the Crystal of Customs
+        </h1>
+      </header>
+      <main>
+        <form
+          class="font-semibold w-1/3 grid grid-cols-3 gap-6 my-3 mx-auto"
+          onSubmit={(e) => {
+            try {
+              e.preventDefault();
+              const userId = e.currentTarget.userId.value;
+              const token = e.currentTarget.token.value;
 
-          if (!userId || !token) {
-            throw new Error("Please enter a valid user ID and token.");
-          }
+              if (!userId || !token) {
+                throw new Error("Please enter a valid user ID and token.");
+              }
 
-          setCredentials({ userId, token });
-        } catch (e: any) {
-          console.error(e);
-          alert(e.message);
-        }
-      }}
-    >
-      <label for="userId" class="text-glow">
-        User ID
-      </label>
-      <input
-        type="text"
-        id="userId"
-        class="text-black rounded glow col-span-2 py-1"
-      />
-      <label for="token" class="text-glow">
-        Token
-      </label>
-      <input
-        type="password"
-        id="token"
-        class="text-black rounded glow col-span-2 py-1"
-      />
-      <button
-        type="submit"
-        class="border w-full col-span-3 transition-all btn-glow p-1"
-      >
-        Submit
-      </button>
-    </form>
+              setCredentials({ userId, token });
+            } catch (e: any) {
+              console.error(e);
+              alert(e.message);
+            }
+          }}
+        >
+          <label for="userId" class="text-glow">
+            User ID
+          </label>
+          <input
+            type="text"
+            id="userId"
+            class="text-black rounded glow col-span-2 py-1"
+          />
+          <label for="token" class="text-glow">
+            Token
+          </label>
+          <input
+            type="password"
+            id="token"
+            class="text-black rounded glow col-span-2 py-1"
+          />
+          <button
+            type="submit"
+            class="border w-full col-span-3 transition-all btn-glow p-1"
+          >
+            Submit
+          </button>
+        </form>
+      </main>
+    </>
   );
 };
 
 const HabitsGrid = () => {
   const qc = useQueryClient();
-  const userDataQuery = createQuery(() => [`user`, credentials()], getUser, {
-    retry: false,
-    staleTime: 1000 * 60 * 60, // 1 hour
-  });
   const habitsQuery = createQuery(() => [`habits`, credentials()], getHabits, {
     retry: false,
     staleTime: 1000 * 60 * 60 * 24, // 24 hours
@@ -100,26 +155,6 @@ const HabitsGrid = () => {
 
   return (
     <div class="text-center">
-      <Show when={userDataQuery.status === "loading"}>
-        <div class="text-blue-50 text-2xl">Loading User Data...</div>
-      </Show>
-      <Show when={userDataQuery.status === "error"}>
-        <div class="text-blue-50 text-2xl">
-          Error: {(userDataQuery.error as any).message}
-        </div>
-      </Show>
-      <Show when={userDataQuery.status === "success"}>
-        <div class="text-blue-50 text-2xl">
-          Hail and well met, {userDataQuery.data?.profile.name}!
-        </div>
-        <div class="text-red-50 text-lg">
-          Lo and behold, thy roster of duties and aspirations for thine
-          self-betterment quest. <br />
-          Thy current tally standeth at{" "}
-          {calculateAverageScore(habitsQuery.data || [])} marks.
-        </div>
-      </Show>
-
       <Show when={habitsQuery.status === "loading"}>
         <div class="text-blue-50 text-2xl">Loading Habits...</div>
       </Show>
@@ -129,6 +164,10 @@ const HabitsGrid = () => {
         </div>
       </Show>
       <Show when={habitsQuery.status === "success"}>
+        <div class="text-white text-lg">
+          Thy current tally standeth at{" "}
+          {calculateAverageScore(habitsQuery.data || [])} marks.
+        </div>
         <div class="flex justify-center gap-4 m-3">
           <button
             class="btn-glow rounded border p-1 m-1"
