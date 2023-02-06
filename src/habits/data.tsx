@@ -27,7 +27,7 @@ export const HabitsPage = () => {
       {() => (
         <>
           <header class="flex justify-between mx-3">
-            <img src={logo} width={150} />
+            <img src={logo} width={150} height={150} />
             <div class="text-center">
               <h1 class="pt-6 pb-3 text-4xl font-bold text-blue-50">
                 Welcome to the Crystal of Customs
